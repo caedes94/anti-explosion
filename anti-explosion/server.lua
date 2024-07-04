@@ -1,6 +1,6 @@
 -- server.lua
 
-local webhookURL = 'https://discord.com/api/webhooks/1098508266692157490/QiITeeTzIHN2uMphpPvkzziMuCxB5eObWWaU91BaaFWlDWqk6CFue6vFXeTV810ous6E'  -- Remplacez par votre URL de webhook Discord
+local webhookURL = ''  -- Remplacez par votre URL de webhook Discord
 
 local explosionsCount = {}  -- Tableau pour stocker le nombre d'explosions par joueur
 local explosionLimit = 4    -- Nombre d'explosions maximum avant expulsion
