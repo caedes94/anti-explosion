@@ -1,6 +1,6 @@
 -- server.lua
 
-local webhookURL = ''  -- Remplacez par votre URL de webhook Discord
+local webhookURL = 'YOUR_DISCORD_WEBHOOK_URL'  -- Remplacez par votre URL de webhook Discord
 
 local explosionsCount = {}  -- Tableau pour stocker le nombre d'explosions par joueur
 local explosionLimit = 4    -- Nombre d'explosions maximum avant expulsion
@@ -25,6 +25,7 @@ RegisterServerEvent('recordExplosion')
 AddEventHandler('recordExplosion', function()
     local player = source
     local playerId = GetPlayerIdentifiers(player)[1]
+    local playerName = GetPlayerName(player)
     
     if not playerId then
         print("Impossible de récupérer l'identifiant du joueur.")
@@ -37,21 +38,22 @@ AddEventHandler('recordExplosion', function()
     
     explosionsCount[playerId] = explosionsCount[playerId] + 1
     
-    print(("Joueur %s a déclenché une explosion. Compteur d'explosions : %d"):format(playerId, explosionsCount[playerId]))
+    print(("Joueur %s (%s) a déclenché une explosion. Compteur d'explosions : %d"):format(playerName, playerId, explosionsCount[playerId]))
     
     if explosionsCount[playerId] >= explosionLimit then
-        print(("Joueur %s a atteint la limite d'explosions. Expulsion en cours..."):format(playerId))
+        print(("Joueur %s (%s) a atteint la limite d'explosions. Expulsion en cours..."):format(playerName, playerId))
         DropPlayer(player, kickMessage)
-        sendToDiscord("Expulsion de joueur", ("Le joueur %s a été expulsé pour usage abusif d'explosifs."):format(playerId), 16711680)  -- Rouge
+        sendToDiscord("Expulsion de joueur", ("Le joueur %s (%s) a été expulsé pour usage abusif d'explosifs."):format(playerName, playerId), 16711680)  -- Rouge
     end
 end)
 
 AddEventHandler('playerDropped', function(reason)
     local player = source
     local playerId = GetPlayerIdentifiers(player)[1]
+    local playerName = GetPlayerName(player)
     
     if playerId and explosionsCount[playerId] then
         explosionsCount[playerId] = nil
-        print(("Compteur d'explosions réinitialisé pour le joueur %s"):format(playerId))
+        print(("Compteur d'explosions réinitialisé pour le joueur %s (%s)"):format(playerName, playerId))
     end
 end)
